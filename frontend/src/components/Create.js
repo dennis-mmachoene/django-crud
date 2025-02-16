@@ -14,7 +14,7 @@ const Create = () => {
 
    const navigate = useNavigate()
 
-  const { handleSubmit, reset, setValue, control } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       name: "",
       start_date: dayjs(),  
