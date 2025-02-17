@@ -51,8 +51,8 @@ const Edit = () => {
 
     const StartDate =  Dayjs(data.start_date["$d"]).format('YYYY-MM-DD')
     const EndDate = Dayjs(data.end_date["$d"]).format('YYYY-MM-DD')
-   AxiosInstance.post(
-    `project/`,{
+   AxiosInstance.put(
+    `project/${myId}/`,{
       name: data.name,
       status: data.status,
       comments: data.comments,
