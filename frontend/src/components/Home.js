@@ -2,16 +2,20 @@ import { useEffect, useMemo, useState } from "react";
 import AxiosInstance from "./Axios";
 import { MaterialReactTable } from "material-react-table";
 import Dayjs from "dayjs";
+import { Box } from "@mui/material";
+import {IconButton}from "@mui/material";
+import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+
 
 const Home = () => {
-
   const [myData, setMyData] = useState();
-  const [loading, setLoading] = useState(true)
-   
+  const [loading, setLoading] = useState(true);
+
   const GetData = () => {
     AxiosInstance.get(`project/`).then((res) => {
-      setMyData(res.data)
-      setLoading(false)
+      setMyData(res.data);
+      setLoading(false);
     });
   };
 
@@ -37,12 +41,12 @@ const Home = () => {
         size: 200,
       },
       {
-        accessorKey: "start_date",
+        accessorFn: (row) => Dayjs(row.start_date).format("DD-MM-YYYY"),
         header: "Start Date",
         size: 150,
       },
       {
-        accessorKey: "end_date",
+        accessorFn: (row) => Dayjs(row.start_date).format("DD-MM-YYYY"),
         header: "End Date",
         size: 150,
       },
@@ -52,9 +56,25 @@ const Home = () => {
 
   return (
     <div>
-      {loading ? <p>Loading data...</p>:
-      <MaterialReactTable columns={columns} data={myData} />
-    }
+      {loading ? (
+        <p>Loading data...</p>
+      ) : (
+        <MaterialReactTable
+          columns={columns}
+          data={myData}
+          enableRowActions
+          renderRowActions={({row}) => (
+            <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
+              <IconButton color="secondary" component={Link} to={`edit/${row.original.id}`}>
+                <EditIcon />
+              </IconButton>
+              <IconButton color="error">
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          )}
+        />
+      )}
     </div>
   );
 };
